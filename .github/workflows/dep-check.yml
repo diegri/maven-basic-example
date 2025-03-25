@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     name: depecheck_test
     steps:
+      # Fix to run action local with act https://stackoverflow.com/a/74666377/20281553
       # - name: Install curl (for nektos/act local CI testing)
       #   run: apt-get update && apt-get install build-essential curl pkg-config openssl -y
       # - name: Download Maven
