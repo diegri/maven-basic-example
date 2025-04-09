@@ -33,7 +33,7 @@ jobs:
   build:
     needs: inspect
     runs-on: ubuntu-latest
-    name: depecheck_test
+    name: Build
     steps:
       - name: Checkout
         uses: actions/checkout@v4

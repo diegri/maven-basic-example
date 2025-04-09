@@ -2,7 +2,7 @@ name: Dependency Check
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   workflow_dispatch:
 
 
