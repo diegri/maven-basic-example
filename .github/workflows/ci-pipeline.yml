@@ -1,0 +1,47 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    name: Depcheck
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Depcheck
+        uses: ./.github/actions/Dependency-Check_Action
+       
+        id: Depcheck
+        with:
+            project: 'test'
+            path: '.'
+            format: 'HTML'
+            out: 'reports' # this is the default, no need to specify unless you wish to override it
+            more_args: >
+                --failOnCVSS 7
+                --enableRetired
+      - name: Upload Test results
+        uses: actions/upload-artifact@master
+        with:
+            name: Depcheck report
+            path: ${{github.workspace}}/reports
+  build:
+    needs: inspect
+    runs-on: ubuntu-latest
+    name: depecheck_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots verify
