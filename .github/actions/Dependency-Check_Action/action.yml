@@ -1,0 +1,33 @@
+name: 'Dependency Check'
+description: 'Github action to execute dependency check as part of a github workflow'
+Author: 'javixeneize'
+branding:
+  icon: 'shield'  
+  color: 'red'
+inputs:
+    project:
+        required: true
+    path:
+        required: true  
+    format:
+        required: true
+    out:
+        required: true
+        default: 'reports'
+
+    more_args:
+        required: false
+runs:
+    using: 'docker'
+    image: 'Dockerfile'
+    args:
+        - '--project'
+        - '${{ inputs.project }}'
+        - '--scan'
+        - '${{ inputs.path }}'
+        - '--format' 
+        - '${{ inputs.format }}'
+        - '--out'
+        - '${{ inputs.out }}'
+        - '--noupdate'
+        - ${{ inputs.more_args }}
