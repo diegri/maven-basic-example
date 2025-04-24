@@ -33,6 +33,14 @@ jobs:
     - name: Run Maven Tests
       run: mvn test
 
+    - name: Generate Suggestions on Failure
+      if: failure()
+      run: |
+        echo "Analyzing logs for suggestions..."
+        curl -X POST -H "Content-Type: application/json" \
+        -d '{"logs": "$(cat $GITHUB_WORKSPACE/logs/test.log)"}' \
+        https://ai-suggestions.example.com/analyze
+
   build:
     runs-on: ubuntu-latest
     needs: test
@@ -57,3 +65,11 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean install
+
+    - name: Generate Suggestions on Failure
+      if: failure()
+      run: |
+        echo "Analyzing logs for suggestions..."
+        curl -X POST -H "Content-Type: application/json" \
+        -d '{"logs": "$(cat $GITHUB_WORKSPACE/logs/build.log)"}' \
+        https://ai-suggestions.example.com/analyze
