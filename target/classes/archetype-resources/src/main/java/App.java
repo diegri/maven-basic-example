@@ -19,5 +19,9 @@ public class App
             return n * factorial(n - 1);
         }
     }
+    // Metodo que calcula la ganancia de un producto
+    public static double ganancia(double costo, double precio) {
+        return precio - costo;
+    }
 }
 

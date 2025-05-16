@@ -1,9 +1,9 @@
-name: Ollama Code Review V2
+name: Ollama Local Code Review
 
 on:
-  # pull_request:
-  #   branches:
-  #     - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Ollama Code Review
-        uses: ./.github/actions/ollama-code-r2
+        uses: ./.github/actions/ollama-code-local
         with:
-          llm-model: 'codegemma'
+          llm-model: 'codegemma:2b'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
