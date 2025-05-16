@@ -21,7 +21,7 @@ runs:
 
     - name: Get modified files
       id: get-modified-files
-      use: tj-actions/changed-files@v43
+      uses: tj-actions/changed-files@v43
 
 
     - name: Review modified files
