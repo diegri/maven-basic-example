@@ -9,5 +9,19 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
+
+    }
+    // Metodo que calcula el factorial de un numero
+    public static int factorial(int n) {
+        if (n == 0 || n == 1) {
+            return 1;
+        } else {
+            return n * factorial(n - 1);
+        }
+    }
+    // Metodo que calcula la ganancia de un producto
+    public static double ganancia(double costo, double precio) {
+        return precio - costo;
     }
 }
+

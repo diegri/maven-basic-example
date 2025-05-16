@@ -1,10 +1,10 @@
-name: 'Code Review using Ollama'
+name: 'Code Review using Local Ollama'
 description: 'Perform a code review on code modified using Ollama'
 inputs:
   llm-model:
     description: 'Name of the LLM model to use for code review'
     required: true
-    default: 'codegemma'
+    default: 'codegemma:2b'
 runs:
   using: 'composite'
   steps:
@@ -12,18 +12,6 @@ runs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-
-    - name: Setup Ollama
-      uses: ai-action/setup-ollama@v1
-      with:
-        version: ${{ inputs.version }}
-
-    - name: Cache model
-      if: inputs.cache == 'true'
-      uses: actions/cache@v4
-      with:
-        path: ~/.ollama
-        key: ollama-action-${{ runner.os }}
 
     - name: Get modified files
       id: get-modified-files
@@ -34,8 +22,8 @@ runs:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
         for file in ${{ steps.get-modified-files.outputs.all_changed_files }}; do
-          #modified_file_review=$(curl -s http://127.0.0.1:11434/api/generate -d '{"model": "${{ inputs.llm-model }}", "prompt": "Review the following file:\n\n```\n$(cat $file)\n```", "stream": false}' | jq -r '.response')
-          ollama run ${{ inputs.llm-model }} "Review the following file:\n\n```\n$(cat $file)\n```" > modified_file_review
+          echo '{"model": "${{ inputs.llm-model }}", "prompt": "Review the following file:\n\n```\n$(cat $file)\n```", "stream": false}'
+          modified_file_review=$(curl -s http://ollama:11434/api/generate -d '{"model": "${{ inputs.llm-model }}", "prompt": "Review the following file:\n\n```\n$(cat $file)\n```", "stream": false}' | jq -r '.response')
           file_comment="Ollama Code Review for \`$file\`:\n\n$modified_file_review"
           echo "$file_comment" >> ollama_review.txt
         done

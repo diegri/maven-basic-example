@@ -1,9 +1,9 @@
-name: Automated Ollama Code Review
+name: Ollama Code Review V2
 
 on:
-  pull_request:
-    branches:
-      - main
+  # pull_request:
+  #   branches:
+  #     - main
   workflow_dispatch:
 
 jobs:
