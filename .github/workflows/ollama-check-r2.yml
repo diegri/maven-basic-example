@@ -1,0 +1,22 @@
+name: Automated Ollama Code Review
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  ollama_review:
+    runs-on: ubuntu-latest
+    name: Ollama Code Review Job
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Ollama Code Review
+        uses: ./.github/actions/ollama-code-r2
+        with:
+          llm-model: 'codegemma'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
